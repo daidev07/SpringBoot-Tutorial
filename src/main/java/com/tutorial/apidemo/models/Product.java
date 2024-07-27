@@ -14,13 +14,13 @@ public class Product {
     private Long id;
     private String productName;
     private int productYear;
-    private Double price;
+    private double price;
     private String url;
 
     //Default Constructor
     public Product() {}
 
-    public Product(String productName, int productYear, Double price, String url) {
+    public Product(String productName, int productYear, double price, String url) {
         this.productName = productName;
         this.productYear = productYear;
         this.price = price;

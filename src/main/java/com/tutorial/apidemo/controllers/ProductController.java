@@ -6,10 +6,7 @@ import com.tutorial.apidemo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +37,20 @@ public class ProductController {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject("Not found", "Cannot find product with id: " + id, "")
             );
+    }
+
+    //Insert new product - Postman: Raw, Json
+    @PostMapping("/insert")
+    ResponseEntity<ResponseObject> insertProduct(@RequestBody Product newProduct){
+        //2 Product must not have the same name
+        List<Product> foundProduct = productRepository.findByProductName(newProduct.getProductName().trim());
+        return foundProduct.size() > 0 ?
+            ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+            new ResponseObject("FAILED", "Product name already exist", "")
+        ):
+            ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseObject("OK", "Inserted product successfully", productRepository.save(newProduct))
+        );
     }
 }
 
